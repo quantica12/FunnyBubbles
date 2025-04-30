@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FunnyBubbles - Learn English</title>
+    <style>
+        /* Estilos mantidos do anterior */
+        body { font-family: Arial, text-align: center; background: #f0f9ff; }
+        .game-container { margin: 20px; padding: 20px; }
+        .item { width: 100px; height: 100px; margin: 10px; cursor: pointer;
+                border: 3px solid #fff; border-radius: 15px; transition: transform 0.2s; }
+        .item:hover { transform: scale(1.1); }
+        #instruction { font-size: 24px; color: #2c3e50; margin: 20px; }
+        #feedback { font-size: 24px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Find the... 🎮</h1>
+        <div id="instruction">Click to start!</div>
+        <div id="game-elements"></div>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const items = [
+            // Frutas
+            { word: "grapes", image: "grape.png" },
+            { word: "orange", image: "orange.png" },
+            { word: "apple", image: "https://cdn-icons-png.flaticon.com/512/415/415733.png" },
+            { word: "pineapple", image: "pineapple.png" },
+            { word: "banana", image: "banana.png" },
+            { word: "peach", image: "peach.png" },
+            { word: "watermelon", image: "watermelon.png" },
+            { word: "strawberry", image: "strawberry.png" },
+            
+            // Família
+            { word: "girl", image: "girl_3984651.png" },
+            { word: "boy", image: "boy_3984629.png" },
+            { word: "mom", image: "mother-day_7409656.png" },
+            { word: "dad", image: "man_16268314.png" },
+            { word: "sister", image: "girl_3984651.png" },
+            { word: "brother", image: "boy_3984618.png" },
+            { word: "grandma", image: "grandma.png" },
+            { word: "grandpa", image: "grandfather.png" },
+            
+            // Animais
+            { word: "cat", image: "black-cat_3528288.png" },
+            { word: "bear", image: "polar-bear_1326417.png" },
+            { word: "bird", image: "canary_3500347.png" },
+            { word: "butterfly", image: "butterfly_11538400.png" },
+            { word: "chicken", image: "chicken_1592627.png" },
+            { word: "cow", image: "cow_1759412.png" },
+            { word: "bee", image: "bee_4431024.png" },
+            { word: "dog", image: "dog_4644948.png" },
+            { word: "elephant", image: "elephant_6661269.png" },
+            { word: "fish", image: "fish_15033359.png" },
+            { word: "frog", image: "frog_17684350.png" },
+            { word: "horse", image: "horse_7412021.png" },
+            { word: "lion", image: "drooling_17533503.png" },
+            { word: "monkey", image: "monkey_1498906.png" },
+            { word: "rabbit", image: "rabbit_4905239.png" },
+            { word: "tiger", image: "animal_16732682.png" },
+            { word: "zebra", image: "zebra_3544906.png" },
+        ];
+
+        // ... (O restante do JavaScript permanece igual ao código anterior)
+        let currentWord;
+        const instructionElement = document.getElementById("instruction");
+        const feedbackElement = document.getElementById("feedback");
+        const gameElements = document.getElementById("game-elements");
+
+        function startNewGame() {
+            currentWord = items[Math.floor(Math.random() * items.length)].word;
+            instructionElement.textContent = `Find the ${currentWord}!`;
+            gameElements.innerHTML = '';
+            
+            items.sort(() => Math.random() - 0.5).forEach(item => {
+                const img = document.createElement("img");
+                img.className = "item";
+                img.src = item.image;
+                img.setAttribute("data-word", item.word);
+                img.addEventListener("click", handleClick);
+                gameElements.appendChild(img);
+            });
+        }
+
+        function handleClick(event) {
+            const selectedWord = event.target.getAttribute("data-word");
+            
+            if (selectedWord === currentWord) {
+                feedbackElement.textContent = `🎉 Correct! It's ${currentWord}!`;
+                feedbackElement.style.color = "#2ecc71";
+                speakWord(currentWord);
+                setTimeout(startNewGame, 1500);
+            } else {
+                feedbackElement.textContent = "❌ Try again!";
+                feedbackElement.style.color = "#e74c3c";
+            }
+        }
+
+        function speakWord(word) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            synth.speak(utterance);
+        }
+
+        window.onload = startNewGame;
+    </script>
+</body>
+</html>
